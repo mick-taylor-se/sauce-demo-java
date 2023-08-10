@@ -11,7 +11,7 @@ pr:
 
 pool:
   name: 'Default'   # Name of the agent pool
-  demands:
+  #demands:
   #- agent.name -equals omv6   # This will make sure the build runs only on omv6 agent
 
 
