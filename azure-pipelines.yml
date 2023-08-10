@@ -10,7 +10,10 @@ pr:
     - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: 'Default'   # Name of the agent pool
+  demands:
+  - agent.name -equals omv6   # This will make sure the build runs only on omv6 agent
+
 
 variables:
   # Use Azure DevOps environment variables for Sauce Labs credentials.
