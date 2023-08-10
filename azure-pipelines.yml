@@ -29,9 +29,25 @@ steps:
 
   # Display the environment variable names (not the values) for debugging purposes.
   - script: |
-      echo "SAUCE_USER variable name is set."
-      echo "SAUCE_KEY variable name is set."
-    displayName: 'Check Environment Variables'
+    if [ -z "$SAUCE_USER" ]; then
+      echo "SAUCE_USER is EMPTY!"
+    else
+      echo "SAUCE_USER is set."
+    fi
+
+    if [ -z "$SAUCE_KEY" ]; then
+      echo "SAUCE_KEY is EMPTY!"
+    else
+      echo "SAUCE_KEY is set."
+    fi
+  displayName: 'Verify SAUCE_USER and SAUCE_KEY'
+
+  - script: |
+    echo "SAUCE_USER: $SAUCE_USER"
+    echo "SAUCE_KEY: $SAUCE_KEY"
+  displayName: 'Echo SAUCE_USER and SAUCE_KEY'
+
+
 
   # Build and test the Maven project.
   - task: Maven@3
