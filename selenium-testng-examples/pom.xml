@@ -18,6 +18,14 @@
             <version>${sauce_testng.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- SLF4J binding with Logback -->
+        <!--<dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version> &lt;!&ndash; Check for the latest version &ndash;&gt;
+        </dependency>-->
+
     </dependencies>
 
     <build>
