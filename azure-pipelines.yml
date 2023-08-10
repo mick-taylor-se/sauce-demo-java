@@ -1,0 +1,32 @@
+# Build your Java project and run tests with Apache Maven.
+trigger:
+– main
+pr:
+– main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+# Sets the environment variables for the pipeline.
+# We create a variable sauce_user and assign it a value of $(SAUCE_USERNAME), which comes from the Azure DevOps.
+variables:
+– name: sauce_user
+  value: $(SAUCE_USERNAME)
+– name: sauce_key
+  value: $(SAUCE_ACCESS_KEY)
+
+steps:
+– bash: echo $SAUCE_USER
+– bash: echo $SAUCE_KEY
+
+# Builds and runs the tests in the Maven project.
+– task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    mavenOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    goals: 'package'
