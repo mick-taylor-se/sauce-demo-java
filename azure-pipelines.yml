@@ -28,7 +28,7 @@ steps:
     displayName: 'Set JAVA_HOME_11_X64'
 
   # Display the environment variable names (not the values) for debugging purposes.
-- script: |
+ - script: |
     if [ -z "$SAUCE_USER" ]; then
       echo "SAUCE_USER is EMPTY!"
     else
