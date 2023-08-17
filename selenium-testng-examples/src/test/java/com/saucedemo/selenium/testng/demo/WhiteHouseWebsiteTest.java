@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -12,6 +13,9 @@ import org.testng.annotations.Test;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 /**
 
@@ -40,8 +44,8 @@ public class WhiteHouseWebsiteTest {
     public void testWhiteHouseBriefingRoomLink() {
         driver.navigate().to("https://www.whitehouse.gov/");
 
-        // You can verify the title of the website if required.
-        // Assert.assertEquals("White House", driver.getTitle());
+
+        Assert.assertEquals("The White House", driver.getTitle());
 
         driver.findElement(By.linkText("Briefing Room")).click();
 
@@ -52,9 +56,20 @@ public class WhiteHouseWebsiteTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        // 1. Verify the Page Title
+        String expectedTitle = "Briefing Room | The White House";  // Assuming this is the title, you might need to adjust.
+        assertEquals(driver.getTitle(), expectedTitle, "Page title is not as expected.");
 
-        // Additional TestNG assertions can be added here as required.
+        // 2. Verify the URL
+        String expectedURL = "https://www.whitehouse.gov/briefing-room/";  // Assuming this is the URL after clicking the link, you might need to adjust.
+        assertEquals(driver.getCurrentUrl(), expectedURL, "URL is not as expected.");
+
+        // 3. Verify Page Content: This is just an example, find an element that represents the correct loading of the page.
+        assertTrue(driver.findElement(By.xpath("//h1[contains(text(), 'Briefing Room')]")).isDisplayed(), "Briefing Room header is not displayed.");
+
+
     }
+
 
     @AfterMethod
     public void teardown(ITestResult result) {
