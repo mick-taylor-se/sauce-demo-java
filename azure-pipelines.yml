@@ -11,15 +11,12 @@ pr:
 
 pool:
   name: 'Default'   # Name of the agent pool
-  #demands:
-  #- agent.name -equals omv6   # This will make sure the build runs only on omv6 agent
 
 variables:
   # Use Azure DevOps environment variables for Sauce Labs credentials.
   sauce_user: $(SAUCE_USERNAME)
   sauce_key: $(SAUCE_ACCESS_KEY)
   docker_image_name: micktaylorse/saucelabs-demo-java:latest  # Docker Hub repository name
-
 
 steps:
   # Set the JAVA_HOME environment variable for this run.
@@ -43,21 +40,23 @@ steps:
       fi
     displayName: 'Verify SAUCE_USER and SAUCE_KEY'
 
+  # Change to the best-practice directory
+  - script: |
+      cd best-practice
+    displayName: 'Switch to best-practice directory'
 
   # Build and test the Maven project.
   - task: Maven@3
     displayName: 'Maven Build and Test'
     inputs:
-      mavenPomFile: 'pom.xml'
+      mavenPomFile: 'best-practice/pom.xml'
       mavenOptions: '-Xmx3072m'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '1.11'
       jdkArchitectureOption: 'x64'
       publishJUnitResults: true
-      testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      goals: 'package'
-
-
+      testResultsFiles: 'best-practice/**/surefire-reports/TEST-*.xml'
+      goals: 'test'
 
   # Building the Docker image
   - task: Docker@2
@@ -71,7 +70,7 @@ steps:
   - task: Docker@2
     displayName: 'Push Docker Image to Docker Hub'
     inputs:
-      containerRegistry: 'Docker'  # Replace with the name of your service connection
+      containerRegistry: 'Docker'  # Ensure your service connection name is 'Docker' or replace with the correct name
       command: 'push'
-      repository: '$(saucelabs-demo-java)'
+      repository: '$(docker_image_name)'
       tags: 'latest'
